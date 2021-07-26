@@ -6,10 +6,13 @@ const apiUrl = process.env.REACT_APP_API_URL
 
 interface Config extends RequestInit {
   token?: string
-  data?: string
+  data?: object
 }
 
-export const http = async (endPoint: string, { data, token, headers, ...customConfig }: Config) => {
+export const http = async (
+  endPoint: string,
+  { data, token, headers, ...customConfig }: Config = {}
+) => {
   const config = {
     method: 'GET',
     headers: {
@@ -43,6 +46,7 @@ export const http = async (endPoint: string, { data, token, headers, ...customCo
 
 export const useHttp = () => {
   const { user } = useAuth()
-  return ([endpoint, config]: Parameters<typeof http>) =>
+  // ...[] 展开
+  return (...[endpoint, config]: Parameters<typeof http>) =>
     http(endpoint, { ...config, token: user?.token })
 }
