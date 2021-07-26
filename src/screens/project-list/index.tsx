@@ -4,8 +4,6 @@ import { SearchPanel } from './search-panel'
 import { cleanObject, useDebounce } from 'utils'
 import { useHttp } from 'utils/http'
 
-const apiUrl = process.env.REACT_APP_API_URL
-
 export const ProjectListScreen = () => {
   const [list, setList] = useState([])
   const [users, setUsers] = useState([])
@@ -19,10 +17,12 @@ export const ProjectListScreen = () => {
 
   useEffect(() => {
     client('projects', { data: cleanObject(debounceParam) }).then(setList)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounceParam])
 
   useEffect(() => {
     client('users').then(setUsers)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
