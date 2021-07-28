@@ -4,6 +4,8 @@ import { SearchPanel } from './search-panel'
 import { cleanObject, useDebounce } from 'utils'
 import { useHttp } from 'utils/http'
 
+import styled from '@emotion/styled'
+
 export const ProjectListScreen = () => {
   const [list, setList] = useState([])
   const [users, setUsers] = useState([])
@@ -26,9 +28,14 @@ export const ProjectListScreen = () => {
   }, [])
 
   return (
-    <div>
+    <Container>
+      <h1>项目列表</h1>
       <SearchPanel param={param} users={users} setParam={setParam} />
       <List list={list} users={users} />
-    </div>
+    </Container>
   )
 }
+
+const Container = styled.div`
+  padding: 3.2rem;
+`
