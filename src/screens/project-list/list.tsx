@@ -21,6 +21,7 @@ interface ListProps {
 export const List: FC<ListProps> = ({ list, users }) => {
   return (
     <Table
+      rowKey="id"
       pagination={false}
       columns={[
         {
