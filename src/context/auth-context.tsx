@@ -21,9 +21,9 @@ const bootstrapUser = async () => {
 const AuthContext = createContext<
   | {
       user: User | null
-      register: (form: AuthForm) => void
-      login: (form: AuthForm) => void
-      logout: () => void
+      register: (form: AuthForm) => Promise<void>
+      login: (form: AuthForm) => Promise<void>
+      logout: () => Promise<void>
     }
   | undefined
 >(undefined)
