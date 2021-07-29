@@ -1,7 +1,9 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
+import { createContext, ReactNode, useContext, useEffect } from 'react'
 import * as auth from 'auth-provider'
 import { User } from 'screens/project-list/search-panel'
 import { http } from 'utils/http'
+import { useAsync } from 'utils/use-async'
+import { FullPageErrorFallback, FullPageLoading } from 'components/lib'
 
 interface AuthForm {
   username: string
@@ -30,7 +32,15 @@ const AuthContext = createContext<
 AuthContext.displayName = 'AuthContext'
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null)
+  const {
+    data: user,
+    setData: setUser,
+    isLoading,
+    error,
+    isIdle,
+    isError,
+    run,
+  } = useAsync<User | null>()
 
   // point free  (user) => setUser(user)  ---->  setUser
   const login = (form: AuthForm) => auth.login(form).then(setUser)
@@ -38,8 +48,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => auth.logout().then(() => setUser(null))
 
   useEffect(() => {
-    bootstrapUser().then(setUser)
+    run(bootstrapUser())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  if (isIdle || isLoading) {
+    return <FullPageLoading />
+  }
+
+  if (isError) {
+    return <FullPageErrorFallback error={error} />
+  }
 
   return <AuthContext.Provider children={children} value={{ login, register, logout, user }} />
 }
