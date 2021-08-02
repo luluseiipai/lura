@@ -50,3 +50,19 @@ export const useArray = <T>(initialArray: T[]) => {
     },
   }
 }
+
+export const useDocumentTitle = (title: string, keepOnUnMount = true) => {
+  const oldTitle = document.title
+  useEffect(() => {
+    document.title = title
+  }, [title])
+
+  useEffect(() => {
+    return () => {
+      if (!keepOnUnMount) {
+        document.title = oldTitle
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+}
