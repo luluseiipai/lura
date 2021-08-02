@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value)
 export const isVoid = (value: unknown) => value === undefined || value === null || value === ''
@@ -52,7 +52,10 @@ export const useArray = <T>(initialArray: T[]) => {
 }
 
 export const useDocumentTitle = (title: string, keepOnUnMount = true) => {
-  const oldTitle = document.title
+  const oldTitle = useRef(document.title).current
+  // 页面加载时: 旧title
+  // 加载后：新title
+
   useEffect(() => {
     document.title = title
   }, [title])
@@ -60,9 +63,9 @@ export const useDocumentTitle = (title: string, keepOnUnMount = true) => {
   useEffect(() => {
     return () => {
       if (!keepOnUnMount) {
+        // 如果不指定依赖，读到的就是旧title
         document.title = oldTitle
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [keepOnUnMount, oldTitle])
 }
