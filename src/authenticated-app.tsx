@@ -45,11 +45,11 @@ export const AuthenticatedApp = () => {
     <Container>
       <PageHeader />
       <Main>
-        <ProjectListScreen />
         <BrowserRouter>
           <Routes>
             <Route path="/projects" element={<ProjectListScreen />} />
             <Route path="/projects/:projectId/*" element={<ProjectScreen />} />
+            <Navigate to={'/projects'} />
           </Routes>
         </BrowserRouter>
       </Main>
