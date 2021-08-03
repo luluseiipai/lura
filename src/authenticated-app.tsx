@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg'
 import { Button, Dropdown, Menu } from 'antd'
+import { resetRoute } from 'utils'
 
 const PageHeader = () => {
   const { logout, user } = useAuth()
@@ -15,7 +16,9 @@ const PageHeader = () => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
-        <SoftwareLogo width="18rem" color="rgb(38, 132, 255)" />
+        <Button type="link" onClick={resetRoute}>
+          <SoftwareLogo width="18rem" color="rgb(38, 132, 255)" />
+        </Button>
         <h3>项目</h3>
         <h3>用户</h3>
       </HeaderLeft>
