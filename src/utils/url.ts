@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { URLSearchParamsInit, useSearchParams } from 'react-router-dom'
+import { cleanObject } from 'utils'
 
 /**
  * @param keys 传递的参数数据
@@ -20,6 +21,12 @@ export const useUrlQueryParam = <T extends string>(keys: T[]) => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [searchParams]
     ),
-    setSearchParams,
+    (params: Partial<{ [K in T]: unknown }>) => {
+      const o = cleanObject({
+        ...Object.fromEntries(searchParams),
+        ...params,
+      }) as URLSearchParamsInit
+      return setSearchParams(o)
+    },
   ] as const
 }
