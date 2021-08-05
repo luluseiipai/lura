@@ -11,8 +11,6 @@ import { Button, Dropdown, Menu } from 'antd'
 import { resetRoute } from 'utils'
 
 const PageHeader = () => {
-  const { logout, user } = useAuth()
-
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
@@ -23,21 +21,7 @@ const PageHeader = () => {
         <h3>用户</h3>
       </HeaderLeft>
       <HeaderRight>
-        <Dropdown
-          overlay={
-            <Menu>
-              <Menu.Item key="logout">
-                <Button type="link" onClick={logout}>
-                  登出
-                </Button>
-              </Menu.Item>
-            </Menu>
-          }
-        >
-          <Button type="link" onClick={(e) => e.preventDefault()}>
-            Hi, {user?.name}
-          </Button>
-        </Dropdown>
+        <User />
       </HeaderRight>
     </Header>
   )
@@ -57,6 +41,28 @@ export const AuthenticatedApp = () => {
         </BrowserRouter>
       </Main>
     </Container>
+  )
+}
+
+const User = () => {
+  const { logout, user } = useAuth()
+
+  return (
+    <Dropdown
+      overlay={
+        <Menu>
+          <Menu.Item key="logout">
+            <Button type="link" onClick={logout}>
+              登出
+            </Button>
+          </Menu.Item>
+        </Menu>
+      }
+    >
+      <Button type="link" onClick={(e) => e.preventDefault()}>
+        Hi, {user?.name}
+      </Button>
+    </Dropdown>
   )
 }
 
