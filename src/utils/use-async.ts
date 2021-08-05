@@ -22,7 +22,7 @@ export const useAsync = <T>(initialState?: State<T>, initialConfig?: typeof defa
     ...defaultInitialState,
     ...initialState,
   })
-  const [retry, setRetry] = useState(() => {})
+  const [retry, setRetry] = useState(() => () => {})
 
   const setData = (data: T) =>
     setState({
@@ -39,11 +39,15 @@ export const useAsync = <T>(initialState?: State<T>, initialConfig?: typeof defa
     })
 
   // run 用来出发异步请求
-  const run = (promise: Promise<T>) => {
+  const run = (promise: Promise<T>, runConfig?: { retry: () => Promise<T> }) => {
     if (!promise || !promise.then) {
       throw new Error('请传入 Promise 类型数据')
     }
-    setRetry(() => run(promise))
+    setRetry(() => () => {
+      if (runConfig?.retry) {
+        run(runConfig?.retry(), runConfig)
+      }
+    })
     setState({ ...state, status: 'loading' })
     return promise
       .then((data) => {
