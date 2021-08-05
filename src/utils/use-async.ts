@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useMountedRef } from 'utils'
 
 interface State<T> {
   error: Error | null
@@ -22,6 +23,7 @@ export const useAsync = <T>(initialState?: State<T>, initialConfig?: typeof defa
     ...defaultInitialState,
     ...initialState,
   })
+  const mountedRef = useMountedRef()
   const [retry, setRetry] = useState(() => () => {})
 
   const setData = (data: T) =>
@@ -51,7 +53,9 @@ export const useAsync = <T>(initialState?: State<T>, initialConfig?: typeof defa
     setState({ ...state, status: 'loading' })
     return promise
       .then((data) => {
-        setData(data)
+        if (mountedRef.current) {
+          setData(data)
+        }
         return data
       })
       .catch((err) => {
