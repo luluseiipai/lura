@@ -1,24 +1,27 @@
+import { FC, useState } from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router'
 import { useAuth } from 'context/auth-context'
-import { Row } from 'components/lib'
+import { resetRoute } from 'utils'
+import { ButtonNoPadding, Row } from 'components/lib'
+import { ProjectPopover } from 'components/project-popover'
 import { ProjectListScreen } from 'screens/project-list'
 import { ProjectScreen } from 'screens/project'
-import { Navigate, Route, Routes } from 'react-router'
-import { BrowserRouter } from 'react-router-dom'
+import { ProjectModel } from 'screens/project-list/project-model'
 
 import styled from '@emotion/styled'
 import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg'
 import { Button, Dropdown, Menu } from 'antd'
-import { resetRoute } from 'utils'
 
-const PageHeader = () => {
+const PageHeader: FC<{ setProjectModelOpen: (isOpen: boolean) => void }> = (props) => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
-        <Button type="link" onClick={resetRoute}>
+        <ButtonNoPadding type="link" onClick={resetRoute}>
           <SoftwareLogo width="18rem" color="rgb(38, 132, 255)" />
-        </Button>
-        <h3>项目</h3>
-        <h3>用户</h3>
+        </ButtonNoPadding>
+        <ProjectPopover setProjectModelOpen={props.setProjectModelOpen} />
+        <span>用户</span>
       </HeaderLeft>
       <HeaderRight>
         <User />
@@ -28,18 +31,27 @@ const PageHeader = () => {
 }
 
 export const AuthenticatedApp = () => {
+  const [projectModelOpen, setProjectModelOpen] = useState(false)
+
   return (
     <Container>
-      <PageHeader />
+      <PageHeader setProjectModelOpen={setProjectModelOpen} />
       <Main>
         <BrowserRouter>
           <Routes>
-            <Route path="/projects" element={<ProjectListScreen />} />
+            <Route
+              path="/projects"
+              element={<ProjectListScreen setProjectModelOpen={setProjectModelOpen} />}
+            />
             <Route path="/projects/:projectId/*" element={<ProjectScreen />} />
             <Navigate to={'/projects'} />
           </Routes>
         </BrowserRouter>
       </Main>
+      <ProjectModel
+        projectModelOpen={projectModelOpen}
+        onClose={() => setProjectModelOpen(false)}
+      />
     </Container>
   )
 }
