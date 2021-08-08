@@ -8,11 +8,9 @@ import { useUsers } from 'utils/user'
 import { useProjectsSearchParams } from './util'
 
 import styled from '@emotion/styled'
-import { Button, Typography } from 'antd'
+import { Typography } from 'antd'
 
-export const ProjectListScreen: FC<{ setProjectModelOpen: (isOpen: boolean) => void }> = (
-  props
-) => {
+export const ProjectListScreen: FC<{ projectButton: JSX.Element }> = (props) => {
   useDocumentTitle('项目列表', false)
 
   const [param, setParam] = useProjectsSearchParams()
@@ -23,7 +21,7 @@ export const ProjectListScreen: FC<{ setProjectModelOpen: (isOpen: boolean) => v
     <Container>
       <Row>
         <h1>项目列表</h1>
-        <Button onClick={() => props.setProjectModelOpen(true)}>创建项目</Button>
+        {props.projectButton}
       </Row>
       <SearchPanel param={param} users={users || []} setParam={setParam} />
       {error ? <Typography.Text type="danger">{error.message}</Typography.Text> : null}
@@ -32,7 +30,7 @@ export const ProjectListScreen: FC<{ setProjectModelOpen: (isOpen: boolean) => v
         dataSource={list || []}
         users={users || []}
         refresh={retry}
-        setProjectModelOpen={props.setProjectModelOpen}
+        projectButton={props.projectButton}
       />
     </Container>
   )

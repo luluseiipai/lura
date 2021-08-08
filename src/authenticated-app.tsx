@@ -13,14 +13,14 @@ import styled from '@emotion/styled'
 import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg'
 import { Button, Dropdown, Menu } from 'antd'
 
-const PageHeader: FC<{ setProjectModelOpen: (isOpen: boolean) => void }> = (props) => {
+const PageHeader: FC<{ projectButton: JSX.Element }> = (props) => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
         <ButtonNoPadding type="link" onClick={resetRoute}>
           <SoftwareLogo width="18rem" color="rgb(38, 132, 255)" />
         </ButtonNoPadding>
-        <ProjectPopover setProjectModelOpen={props.setProjectModelOpen} />
+        <ProjectPopover {...props} />
         <span>用户</span>
       </HeaderLeft>
       <HeaderRight>
@@ -35,13 +35,27 @@ export const AuthenticatedApp = () => {
 
   return (
     <Container>
-      <PageHeader setProjectModelOpen={setProjectModelOpen} />
+      <PageHeader
+        projectButton={
+          <ButtonNoPadding type="link" onClick={() => setProjectModelOpen(true)}>
+            创建项目
+          </ButtonNoPadding>
+        }
+      />
       <Main>
         <BrowserRouter>
           <Routes>
             <Route
               path="/projects"
-              element={<ProjectListScreen setProjectModelOpen={setProjectModelOpen} />}
+              element={
+                <ProjectListScreen
+                  projectButton={
+                    <ButtonNoPadding type="link" onClick={() => setProjectModelOpen(true)}>
+                      创建项目
+                    </ButtonNoPadding>
+                  }
+                />
+              }
             />
             <Route path="/projects/:projectId/*" element={<ProjectScreen />} />
             <Navigate to={'/projects'} />
