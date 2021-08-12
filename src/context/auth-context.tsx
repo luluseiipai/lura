@@ -5,12 +5,12 @@ import { http } from 'utils/http'
 import { useAsync } from 'utils/use-async'
 import { FullPageErrorFallback, FullPageLoading } from 'components/lib'
 
-interface AuthForm {
+export interface AuthForm {
   username: string
   password: string
 }
 
-const bootstrapUser = async () => {
+export const bootstrapUser = async () => {
   let user = null
   const token = auth.getToken()
   if (token) {

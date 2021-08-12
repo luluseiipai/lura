@@ -8,7 +8,7 @@ import { ButtonNoPadding } from './lib'
 
 export const ProjectPopover = () => {
   const dispatch = useDispatch()
-  const { data: project, isLoading } = useProjects()
+  const { data: project } = useProjects()
   const pinnedProjects = project?.filter((project) => project.pin)
 
   const content = (
