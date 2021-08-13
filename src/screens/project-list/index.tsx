@@ -1,37 +1,33 @@
-import { FC } from 'react'
 import { List } from './list'
 import { SearchPanel } from './search-panel'
-import { Row } from 'components/lib'
+import { ButtonNoPadding, Row } from 'components/lib'
 import { useDebounce, useDocumentTitle } from 'utils'
 import { useProjects } from 'utils/project'
 import { useUsers } from 'utils/user'
-import { useProjectsSearchParams } from './util'
+import { useProjectModal, useProjectsSearchParams } from './util'
 
 import styled from '@emotion/styled'
 import { Typography } from 'antd'
 
-export const ProjectListScreen: FC<{ projectButton: JSX.Element }> = (props) => {
+export const ProjectListScreen = () => {
   useDocumentTitle('项目列表', false)
 
   const [param, setParam] = useProjectsSearchParams()
   const { isLoading, error, data: list, retry } = useProjects(useDebounce(param))
   const { data: users } = useUsers()
+  const { open } = useProjectModal()
 
   return (
     <Container>
       <Row>
         <h1>项目列表</h1>
-        {props.projectButton}
+        <ButtonNoPadding type="link" onClick={open}>
+          创建项目
+        </ButtonNoPadding>
       </Row>
       <SearchPanel param={param} users={users || []} setParam={setParam} />
       {error ? <Typography.Text type="danger">{error.message}</Typography.Text> : null}
-      <List
-        loading={isLoading}
-        dataSource={list || []}
-        users={users || []}
-        refresh={retry}
-        projectButton={props.projectButton}
-      />
+      <List loading={isLoading} dataSource={list || []} users={users || []} refresh={retry} />
     </Container>
   )
 }

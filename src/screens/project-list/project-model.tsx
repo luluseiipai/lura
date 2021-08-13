@@ -1,12 +1,13 @@
-import { FC } from 'react'
-
 import { Button, Drawer } from 'antd'
+import { useProjectModal } from './util'
 
-export const ProjectModel: FC<{ projectModelOpen?: boolean; onClose?: () => void }> = (props) => {
+export const ProjectModel = () => {
+  const { projectModalOpen, close } = useProjectModal()
+
   return (
-    <Drawer visible={props.projectModelOpen} width="100%" onClose={props.onClose}>
+    <Drawer visible={projectModalOpen} width="100%" onClose={close}>
       <h1>project model</h1>
-      <Button onClick={props.onClose}>关闭</Button>
+      <Button onClick={close}>关闭</Button>
     </Drawer>
   )
 }
