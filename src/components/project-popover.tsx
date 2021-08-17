@@ -6,7 +6,7 @@ import styled from '@emotion/styled'
 import { ButtonNoPadding } from './lib'
 
 export const ProjectPopover = () => {
-  const { data: project, isLoading } = useProjects()
+  const { data: project } = useProjects()
   const pinnedProjects = project?.filter((project) => project.pin)
   const { open } = useProjectModal()
 
@@ -15,7 +15,7 @@ export const ProjectPopover = () => {
       <Typography.Text type="secondary">收藏项目</Typography.Text>
       <List>
         {pinnedProjects?.map((project) => (
-          <List.Item>
+          <List.Item key={project.id}>
             <List.Item.Meta title={project.name} />
           </List.Item>
         ))}

@@ -4,10 +4,10 @@ import { User } from './search-panel'
 import { Link } from 'react-router-dom'
 import { Pin } from 'components/pin'
 import { useEditProject } from 'utils/project'
-import { useProjectModal } from './util'
 
 import { Dropdown, Menu, Table, TableProps } from 'antd'
 import { ButtonNoPadding } from 'components/lib'
+import { useProjectModal } from './util'
 
 export interface Project {
   id: number
@@ -25,7 +25,8 @@ interface ListProps extends TableProps<Project> {
 export const List: FC<ListProps> = ({ users, ...props }) => {
   const { mutate } = useEditProject()
   const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin })
-  const { open } = useProjectModal()
+  const { startEdit } = useProjectModal()
+  const editProject = (id: number) => startEdit(id)
 
   return (
     <Table
@@ -70,11 +71,10 @@ export const List: FC<ListProps> = ({ users, ...props }) => {
               <Dropdown
                 overlay={
                   <Menu>
-                    <Menu.Item key="edit">
-                      <ButtonNoPadding type="link" onClick={open}>
-                        创建项目
-                      </ButtonNoPadding>
+                    <Menu.Item key="edit" onClick={() => editProject(project.id)}>
+                      编辑
                     </Menu.Item>
+                    <Menu.Item key="delete">删除</Menu.Item>
                   </Menu>
                 }
               >
