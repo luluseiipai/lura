@@ -1,10 +1,10 @@
 import { FC } from 'react'
 import dayjs from 'dayjs'
-import { User } from './search-panel'
 import { Link } from 'react-router-dom'
 import { Pin } from 'components/pin'
 import { useDeleteProject, useEditProject } from 'utils/project'
 import { Project } from 'types/project'
+import { User } from 'types/user'
 
 import { Dropdown, Menu, Table, TableProps, Modal } from 'antd'
 import { ButtonNoPadding } from 'components/lib'
