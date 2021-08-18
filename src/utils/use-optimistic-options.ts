@@ -1,5 +1,5 @@
 import { QueryKey, useQueryClient } from 'react-query'
-import { Project } from 'screens/project-list/list'
+import { Project } from 'types/project'
 
 // react-query -> useMutation config 抽离
 // callback 用于处理旧数据

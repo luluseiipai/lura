@@ -4,19 +4,11 @@ import { User } from './search-panel'
 import { Link } from 'react-router-dom'
 import { Pin } from 'components/pin'
 import { useDeleteProject, useEditProject } from 'utils/project'
+import { Project } from 'types/project'
 
 import { Dropdown, Menu, Table, TableProps, Modal } from 'antd'
 import { ButtonNoPadding } from 'components/lib'
 import { useProjectModal, useProjectsQueryKey } from './util'
-
-export interface Project {
-  id: number
-  name: string
-  personId: number
-  pin: boolean
-  organization: string
-  created: number
-}
 
 interface ListProps extends TableProps<Project> {
   users: User[]

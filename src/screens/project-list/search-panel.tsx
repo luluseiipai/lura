@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Project } from './list'
+import { Project } from 'types/project'
 
 import { Form, Input } from 'antd'
 import { UserSelect } from 'components/user-select'
