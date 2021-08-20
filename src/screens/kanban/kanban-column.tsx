@@ -1,8 +1,8 @@
 import { FC } from 'react'
 import { Kanban } from 'types/kanban'
-import { useTask } from 'utils/task'
+import { useTasks } from 'utils/task'
 import { useTaskType } from 'utils/task-type'
-import { useTasksSearchParams } from './util'
+import { useTaskModal, useTasksSearchParams } from './util'
 import { ReactComponent as TaskIcon } from 'assets/task.svg'
 import { ReactComponent as BugIcon } from 'assets/bug.svg'
 import styled from '@emotion/styled'
@@ -18,15 +18,20 @@ const TaskTypeIcon: FC<{ id: number }> = ({ id }) => {
 }
 
 export const KanbanColumn: FC<{ kanban: Kanban }> = ({ kanban }) => {
-  const { data: allTasks } = useTask(useTasksSearchParams())
+  const { data: allTasks } = useTasks(useTasksSearchParams())
   const tasks = allTasks?.filter((task) => task.kanbanId === kanban.id)
+  const { startEdit } = useTaskModal()
 
   return (
     <Container>
       <h3>{kanban.name}</h3>
       <TaskContainer>
         {tasks?.map((task) => (
-          <Card style={{ marginBottom: '0.5rem' }} key={task.id}>
+          <Card
+            style={{ marginBottom: '0.5rem', cursor: 'pointer' }}
+            key={task.id}
+            onClick={() => startEdit(task.id)}
+          >
             <div>{task.name}</div>
             <TaskTypeIcon id={task.typeId} />
           </Card>
