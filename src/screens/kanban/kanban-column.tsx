@@ -7,6 +7,7 @@ import { ReactComponent as TaskIcon } from 'assets/task.svg'
 import { ReactComponent as BugIcon } from 'assets/bug.svg'
 import styled from '@emotion/styled'
 import { Card } from 'antd'
+import { CreateTask } from './create-task'
 
 const TaskTypeIcon: FC<{ id: number }> = ({ id }) => {
   const { data: taskTypes } = useTaskType()
@@ -30,12 +31,13 @@ export const KanbanColumn: FC<{ kanban: Kanban }> = ({ kanban }) => {
             <TaskTypeIcon id={task.typeId} />
           </Card>
         ))}
+        <CreateTask kanbanId={kanban.id} />
       </TaskContainer>
     </Container>
   )
 }
 
-const Container = styled.div`
+export const Container = styled.div`
   min-width: 27rem;
   padding: 0.7rem 0.7rem 1rem;
   margin-right: 1.5rem;
