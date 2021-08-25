@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import React, { FC } from 'react'
 import { Kanban } from 'types/kanban'
 import { useTasks } from 'utils/task'
 import { useTaskType } from 'utils/task-type'
@@ -39,25 +39,27 @@ const TaskCard: FC<{ task: Task }> = ({ task }) => {
   )
 }
 
-export const KanbanColumn: FC<{ kanban: Kanban }> = ({ kanban }) => {
-  const { data: allTasks } = useTasks(useTasksSearchParams())
-  const tasks = allTasks?.filter((task) => task.kanbanId === kanban.id)
+export const KanbanColumn = React.forwardRef<HTMLDivElement, { kanban: Kanban }>(
+  ({ kanban, ...restProps }, ref) => {
+    const { data: allTasks } = useTasks(useTasksSearchParams())
+    const tasks = allTasks?.filter((task) => task.kanbanId === kanban.id)
 
-  return (
-    <Container>
-      <Row between>
-        <h3>{kanban.name}</h3>
-        <More kanban={kanban} />
-      </Row>
-      <TaskContainer>
-        {tasks?.map((task) => (
-          <TaskCard task={task} />
-        ))}
-        <CreateTask kanbanId={kanban.id} />
-      </TaskContainer>
-    </Container>
-  )
-}
+    return (
+      <Container ref={ref} {...restProps}>
+        <Row between>
+          <h3>{kanban.name}</h3>
+          <More kanban={kanban} key={kanban.id} />
+        </Row>
+        <TaskContainer>
+          {tasks?.map((task) => (
+            <TaskCard task={task} key={task.id} />
+          ))}
+          <CreateTask kanbanId={kanban.id} />
+        </TaskContainer>
+      </Container>
+    )
+  }
+)
 
 const More = ({ kanban }: { kanban: Kanban }) => {
   const { mutateAsync: deleteKanban } = useDeleteKanban(useKanbanQueryKey())
