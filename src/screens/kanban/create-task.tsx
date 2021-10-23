@@ -28,7 +28,7 @@ export const CreateTask: FC<{ kanbanId: number }> = ({ kanbanId }) => {
     return (
       <div onClick={toggle}>
         <PlusOutlined />
-        创建事物
+        创建事务
       </div>
     )
   }
